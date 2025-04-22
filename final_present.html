@@ -9,7 +9,7 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.6.40">
 
-  <meta name="author" content="Team Jacob">
+  <meta name="author" content="Team i">
   <meta name="dcterms.date" content="2025-04-21">
   <title>CravenSpeed Final – Final Presentation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -133,7 +133,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Team Jacob 
+Team <span class="math inline">\(i\)</span> 
 </div>
 </div>
 </div>
@@ -234,8 +234,8 @@ Team Jacob
 <h1>Linear Model (LM)</h1>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>  intercept    RMSE  Rsquared     MAE   RMSESD RsquaredSD   MAESD
-1      TRUE 1737.96 0.6215475 874.891 280.9737  0.1045305 91.8909</code></pre>
+<pre><code>  intercept     RMSE  Rsquared      MAE   RMSESD RsquaredSD    MAESD
+1      TRUE 1750.555 0.6173738 874.0378 289.8027  0.1405774 41.67191</code></pre>
 </div>
 </div>
 </section>
@@ -248,9 +248,9 @@ Team Jacob
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  mtry     RMSE  Rsquared      MAE   RMSESD RsquaredSD    MAESD
-1    2 1949.988 0.7456534 763.0942 541.3752 0.05835623 86.56510
-2   13 1139.344 0.8637567 240.7161 592.3152 0.09078196 45.87762
-3   25 1095.244 0.8660091 223.8972 639.4137 0.11333878 50.87360</code></pre>
+1    2 1959.379 0.7337146 774.3280 683.1845 0.06747200 69.80119
+2   13 1152.112 0.8675074 255.7203 624.9107 0.07640317 62.57345
+3   25 1067.377 0.8811850 230.5241 639.6849 0.08327907 62.52531</code></pre>
 </div>
 </div>
 </section>
@@ -292,18 +292,6 @@ Team Jacob
 <li>Some features had little variance (e.g., materials or sales channel)</li>
 <li>Missing sales dates limited usable data</li>
 <li>Profit is based only on revenue and BOM, not all costs</li>
-</ul>
-</section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="next-steps" class="title-slide slide level1 center">
-<h1>Next Steps</h1>
-<ul>
-<li>Try <code>xgboost</code> or <code>ridge</code> regression</li>
-<li>Add more nuanced time-series or seasonal features</li>
-<li>Incorporate other cost factors if available</li>
 </ul>
 </section>
 <section class="slide level2">
@@ -655,7 +643,7 @@ Team Jacob
       }
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
+          var filterRegex = new RegExp("https:\/\/JacobHack\.github\.io\/final505\/");
         var isInternal = (href) => {
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
