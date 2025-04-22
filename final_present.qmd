@@ -1,0 +1,155 @@
+---
+title: "Final Presentation"
+author: "Team Jacob"
+date: "04/21/2025"
+format: revealjs
+---
+
+# Goal
+
+-   Predict **Profit** of new CravenSpeed products\
+-   Evaluate models using **RMSE**
+-   Use exactly **10 engineered features**\
+-   Train models using **caret** with 5-fold cross-validation
+
+------------------------------------------------------------------------
+
+# Feature Engineering Strategy
+
+We created 10 features based on product cost, sales, and design:
+
+| Feature                       | Rationale                          |
+|-------------------------------|------------------------------------|
+| Unit Margin                   | Retail price - BOM cost            |
+| Log Units Sold                | Handles skewed sales               |
+| Product Age                   | Older products may stagnate        |
+| Is Craven                     | Distinguishes internal vs external |
+| Material Type                 | Reflects cost/quality              |
+| MFG Process                   | Indicates outsourcing vs in-house  |
+| Weight/Price Ratio            | Efficiency or premium              |
+| \% Direct Sales               | Profit often higher direct         |
+| Sales Channel                 | Some may have higher margins       |
+| Interaction: Units × % Direct | Captures sales style impact        |
+
+------------------------------------------------------------------------
+
+# Engineer Function
+
+```{r}
+engineer <- function(df) {
+  df <- df %>%
+    mutate(
+      unit_margin = retailPrice - `BOM Cost`,
+      log_units_sold = log1p(`Units Sold`),
+      product_age = as.numeric(difftime(Sys.Date(), 
+                          suppressWarnings(as.Date(`First Order (from sales data)`, format = "%m/%d/%y")), 
+                          units = "days")) / 365,
+      is_craven = `Product Type` == "#Craven",
+      material_type = as.factor(`Main Component Material`),
+      mfg_process = as.factor(`Main Component MFG Process`),
+      weight_price_ratio = `Unit Weight (pounds)` / (retailPrice + 1),
+      pct_direct_sales = as.numeric(gsub("%", "", `pct_Direct Sales`)) / 100,
+      sales_channel = as.factor(`Sales Channel`),
+      direct_volume = `Units Sold` * pct_direct_sales
+    ) %>%
+    select(unit_margin, log_units_sold, product_age, is_craven, 
+           material_type, mfg_process, weight_price_ratio, 
+           pct_direct_sales, sales_channel, direct_volume)
+  return(df)
+}
+```
+
+------------------------------------------------------------------------
+
+# Modeling Workflow
+
+```{r}
+library(tidyverse)
+library(caret)
+
+fast <- readRDS(gzcon(url("https://github.com/cd-public/D505/raw/refs/heads/master/dat/craven_train.rds")))
+
+# Engineer features
+profit <- fast$`Revenue 2019 to present` - fast$`BOM Cost` * fast$`Units Sold`
+fast_features <- engineer(fast)
+fast_features$Profit <- profit
+fast_features <- na.omit(fast_features)
+
+# Remove single-level factors
+fast_features <- fast_features %>%
+  select(where(~ !is.factor(.) || nlevels(.) > 1))
+
+# Train control
+ctrl <- trainControl(method = "cv", number = 5)
+```
+
+------------------------------------------------------------------------
+
+# Linear Model (LM)
+
+```{r}
+model_lm <- train(Profit ~ ., data = fast_features, method = "lm", trControl = ctrl)
+model_lm$results
+```
+
+------------------------------------------------------------------------
+
+# Random Forest (RF)
+
+```{r}
+model_rf <- train(Profit ~ ., data = fast_features, method = "rf", trControl = ctrl, tuneLength = 3)
+model_rf$results
+```
+
+------------------------------------------------------------------------
+
+# RMSE Comparison
+
+```{r}
+results <- bind_rows(
+  model_lm$results %>% mutate(Model = "Linear Regression"),
+  model_rf$results %>% mutate(Model = paste0("Random Forest (mtry=", mtry, ")"))
+)
+
+ggplot(results, aes(x = Model, y = RMSE)) +
+  geom_col(fill = "steelblue") +
+  labs(title = "RMSE Comparison", y = "RMSE", x = "")
+```
+
+------------------------------------------------------------------------
+
+# Feature Importance (Random Forest)
+
+```{r}
+plot(varImp(model_rf), top = 10)
+```
+
+------------------------------------------------------------------------
+
+# Key Insights
+
+-   Random Forest outperforms Linear Regression (lower RMSE)
+-   Top features: `unit_margin`, `log_units_sold`, `direct_volume`
+-   Products with high direct sales volume and strong unit margins yield better profits
+
+------------------------------------------------------------------------
+
+# Limitations
+
+-   Some features had little variance (e.g., materials or sales channel)
+-   Missing sales dates limited usable data
+-   Profit is based only on revenue and BOM, not all costs
+
+------------------------------------------------------------------------
+
+# Next Steps
+
+-   Try `xgboost` or `ridge` regression
+-   Add more nuanced time-series or seasonal features
+-   Incorporate other cost factors if available
+
+------------------------------------------------------------------------
+
+# Thank You!
+
+Questions?
