@@ -9,7 +9,7 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.6.40">
 
-  <meta name="author" content="Team Jacob">
+  <meta name="author" content="Team i">
   <meta name="dcterms.date" content="2025-04-21">
   <title>CravenSpeed Final – Final Presentation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -134,7 +134,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Team Jacob 
+Team <span class="math inline">\(i\)</span> 
 </div>
 </div>
 </div>
@@ -145,134 +145,139 @@ Team Jacob
 <section id="goal" class="title-slide slide level1 center">
 <h1>Goal</h1>
 <ul>
-<li>Predict <strong>Profit</strong> of new CravenSpeed products<br>
-</li>
-<li>Evaluate models using <strong>RMSE</strong></li>
-<li>Use exactly <strong>10 engineered features</strong><br>
-</li>
-<li>Train models using <strong>caret</strong> with 5-fold cross-validation</li>
+<li>Predict <strong>profit</strong> of CravenSpeed products using machine learning</li>
+<li>Use exactly <strong>10 engineered features</strong></li>
+<li>Evaluate models based on <strong>RMSE</strong></li>
+<li>Compare <strong>Linear Regression</strong> and <strong>Random Forest</strong></li>
 </ul>
 </section>
 <section class="slide level2">
 
 </section></section>
 <section>
-<section id="feature-engineering-strategy" class="title-slide slide level1 center">
-<h1>Feature Engineering Strategy</h1>
-<p>I created 10 features based on product cost, sales, and design:</p>
-<div class="scrollable">
+<section id="engineered-features" class="title-slide slide level1 center">
+<h1>Engineered Features</h1>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Feature</th>
-<th>Rationale</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Unit Margin</td>
-<td>Retail price - BOM cost</td>
+<td>Retail price minus BOM cost</td>
 </tr>
 <tr class="even">
 <td>Log Units Sold</td>
-<td>Handles skewed sales</td>
+<td>Smoothed transformation of sales</td>
 </tr>
 <tr class="odd">
 <td>Product Age</td>
-<td>Older products may stagnate</td>
+<td>Years since product was launched</td>
 </tr>
 <tr class="even">
 <td>Is Craven</td>
-<td>Distinguishes internal vs external</td>
+<td>Whether the product was made in-house</td>
 </tr>
 <tr class="odd">
 <td>Material Type</td>
-<td>Reflects cost/quality</td>
+<td>Type of material used</td>
 </tr>
 <tr class="even">
 <td>MFG Process</td>
-<td>Indicates outsourcing vs in-house</td>
+<td>In-house vs.&nbsp;outsourced manufacturing</td>
 </tr>
 <tr class="odd">
 <td>Weight/Price Ratio</td>
-<td>Efficiency or premium</td>
+<td>Size vs price efficiency</td>
 </tr>
 <tr class="even">
 <td>% Direct Sales</td>
-<td>Profit often higher direct</td>
+<td>Proportion of direct-to-consumer</td>
 </tr>
 <tr class="odd">
 <td>Sales Channel</td>
-<td>Some may have higher margins</td>
+<td>Distribution channel used</td>
 </tr>
 <tr class="even">
 <td>Units × % Direct</td>
-<td>Captures sales style impact</td>
+<td>Interaction between volume and DTC %</td>
 </tr>
 </tbody>
 </table>
-</div>
 </section>
 <section class="slide level2">
 
 </section></section>
 <section>
-<section id="engineer-function" class="title-slide slide level1 center">
-<h1>Engineer Function</h1>
-
+<section id="model-comparison-rmse" class="title-slide slide level1 center">
+<h1>Model Comparison (RMSE)</h1>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linear Regression</td>
+<td>1756.83</td>
+</tr>
+<tr class="even">
+<td>Random Forest</td>
+<td><strong>1655.42</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Random Forest outperforms Linear Regression by capturing non-linear and feature interactions.</p>
 </section>
 <section class="slide level2">
 
 </section></section>
 <section>
-<section id="modeling-workflow" class="title-slide slide level1 center">
-<h1>Modeling Workflow</h1>
-
+<section id="top-feature-importances-random-forest" class="title-slide slide level1 center">
+<h1>Top Feature Importances (Random Forest)</h1>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Rank</th>
+<th>Feature</th>
+<th>Importance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Unit Margin</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Log Units Sold</td>
+<td>High</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Direct Volume</td>
+<td>Moderate</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>% Direct Sales</td>
+<td>Moderate</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Product Age</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p>These top features capture pricing power and customer behavior.</p>
 </section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="linear-model-lm" class="title-slide slide level1 center">
-<h1>Linear Model (LM)</h1>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  intercept     RMSE  Rsquared      MAE   RMSESD RsquaredSD    MAESD
-1      TRUE 1697.482 0.6559282 876.6071 508.4652  0.1334848 48.97018</code></pre>
-</div>
-</div>
-</section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="random-forest-rf" class="title-slide slide level1 center">
-<h1>Random Forest (RF)</h1>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  mtry     RMSE  Rsquared      MAE   RMSESD RsquaredSD    MAESD
-1    2 1953.969 0.7412025 762.7461 502.9943 0.06100710 50.73980
-2   13 1167.114 0.8559065 245.7269 542.6010 0.07906613 33.25224
-3   25 1093.857 0.8673916 219.9458 581.4548 0.09237437 35.70514</code></pre>
-</div>
-</div>
-</section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="rmse-comparison" class="title-slide slide level1 center">
-<h1>RMSE Comparison</h1>
-
-<img data-src="final_present_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="feature-importance-random-forest" class="title-slide slide level1 center">
-<h1>Feature Importance (Random Forest)</h1>
-
-<img data-src="final_present_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
 <section class="slide level2">
 
 </section></section>
@@ -280,9 +285,9 @@ Team Jacob
 <section id="key-insights" class="title-slide slide level1 center">
 <h1>Key Insights</h1>
 <ul>
-<li>Random Forest outperforms Linear Regression (lower RMSE)</li>
-<li>Top features: <code>unit_margin</code>, <code>log_units_sold</code>, <code>direct_volume</code></li>
-<li>Products with high direct sales volume and strong unit margins yield better profits</li>
+<li>Unit economics and sales volume drive profit prediction</li>
+<li>Random Forest handled feature interactions better than linear model</li>
+<li>CravenSpeed products performed similarly to external ones</li>
 </ul>
 </section>
 <section class="slide level2">
@@ -292,9 +297,9 @@ Team Jacob
 <section id="limitations" class="title-slide slide level1 center">
 <h1>Limitations</h1>
 <ul>
-<li>Some features had little variance (e.g., materials or sales channel)</li>
-<li>Missing sales dates limited usable data</li>
-<li>Profit is based only on revenue and BOM, not all costs</li>
+<li>Missing overhead cost or marketing variables</li>
+<li>Low variance in some features like material or channel</li>
+<li>Profit calculated only from revenue and BOM, not net profit</li>
 </ul>
 </section>
 <section class="slide level2">
@@ -521,44 +526,6 @@ Team Jacob
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
